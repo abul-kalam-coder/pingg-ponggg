@@ -1,3 +1,4 @@
+start="";
 var rightx;
 var righty;
 var rightscore;
@@ -50,9 +51,26 @@ function setup(){
     console.log('PoseNet Is Initialized');
   }
 
-
+function startGame(){
+  start="start";
+}
 function draw(){
+    
 
+if(start=="start"){
+  background(0); 
+  image(video, 0, 0, 700, 600);
+  fill("black");
+  stroke("black");
+  rect(680,0,20,700);
+
+ if(rightscore>0.2){
+ stroke("red");
+ fill("red");
+ console.log("score "+rightscore)
+ circle(rightx,righty,30);
+ }
+ 
  background(0); 
  image(video, 0, 0, 700, 600);
  fill("black");
@@ -95,13 +113,14 @@ circle(rightx,righty,30);
    
    //function move call which in very important
     move();
+}
     
 }
 
 
 
 //function reset when ball does notcame in the contact of padde
-function reset(){
+function restart(){
    ball.x = width/2+100,
    ball.y = height/2+100;
    ball.dx=3;
