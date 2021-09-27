@@ -1,4 +1,6 @@
-
+var rightx;
+var righty;
+var rightscore;
 /*created by prashant shukla */
 
 var paddle2 =10,paddle1=10;
@@ -21,19 +23,47 @@ var ball = {
     dy:3
 }
 
+
 function setup(){
   var canvas =  createCanvas(700,600);
-}
+  canvas.parent('canvas');
+  canvas.parent('canvas');
+  video = createCapture(VIDEO);
+  video.size(700, 600);
+  video.hide();
+  
+  video.parent("gameConsole");
+  poseNet = ml5.poseNet(video, modelLoaded);
+  poseNet.on('pose', gotPoses);
+  }
+  function gotPoses(results){
+    if (results.length>0){
+      console.log(results);
+      rightx=results[0].pose.rightWrist.x;
+      righty=results[0].pose.rightWrist.y;
+      rightscore=results[0].pose.score;
+    }
+  
+
+  }
+  function modelLoaded() {
+    console.log('PoseNet Is Initialized');
+  }
 
 
 function draw(){
 
  background(0); 
-
+ image(video, 0, 0, 700, 600);
  fill("black");
  stroke("black");
  rect(680,0,20,700);
-
+if(rightscore>0.2){
+stroke("red");
+fill("red");
+console.log("score "+rightscore)
+circle(rightx,righty,30);
+}
  fill("black");
  stroke("black");
  rect(0,0,20,700);
@@ -65,6 +95,7 @@ function draw(){
    
    //function move call which in very important
     move();
+    
 }
 
 
