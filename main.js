@@ -23,16 +23,17 @@ var ball = {
     dx:3,
     dy:3
 }
-
-
+function preload(){
+  paddle_touch=loadSound('ball_touch_paddel.wav');
+  missed =loadSound('missed.wav');
+console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+}
 function setup(){
   var canvas =  createCanvas(700,600);
-  canvas.parent('canvas');
   canvas.parent('canvas');
   video = createCapture(VIDEO);
   video.size(700, 600);
   video.hide();
-  
   video.parent("gameConsole");
   poseNet = ml5.poseNet(video, modelLoaded);
   poseNet.on('pose', gotPoses);
@@ -53,7 +54,9 @@ function setup(){
 
 function startGame(){
   start="start";
+
 }
+
 function draw(){
     
 
@@ -93,7 +96,7 @@ circle(rightx,righty,30);
    fill(250,0,0);
     stroke(0,0,250);
     strokeWeight(0.5);
-   paddle1Y = mouseY; 
+   paddle1Y = righty; 
    rect(paddle1X,paddle1Y,paddle1,paddle1Height,100);
    
    
@@ -119,13 +122,14 @@ circle(rightx,righty,30);
 
 
 
+
 //function reset when ball does notcame in the contact of padde
-function restart(){
+function reset(){
    ball.x = width/2+100,
    ball.y = height/2+100;
    ball.dx=3;
    ball.dy =3;
-   
+    missed.play();
 }
 
 
@@ -151,8 +155,8 @@ function drawScore(){
     text("Computer:",500,50)
     text(pcscore,555,50)
 }
-
-
+function restart(){
+}
 //very important function of this game
 function move(){
    fill(50,350,0);
@@ -167,6 +171,7 @@ function move(){
   if (ball.x-2.5*ball.r/2< 0){
   if (ball.y >= paddle1Y&& ball.y <= paddle1Y + paddle1Height) {
     ball.dx = -ball.dx+0.5; 
+    paddle_touch.play();
   }
   else{
     pcscore++;
@@ -182,14 +187,14 @@ if(pcscore ==4){
     stroke("white");
     textSize(25)
     text("Game Over!☹☹",width/2,height/2);
-    text("Reload The Page!",width/2,height/2+30)
+    text("CLICK RESTART TO PLAY AGAIN!",width/2,height/2+30)
     noLoop();
     pcscore = 0;
 }
    if(ball.y+ball.r > height || ball.y-ball.r <0){
        ball.dy =- ball.dy;
-   }   
-}
+   }    
+  }
 
 
 //width height of canvas speed of ball 
